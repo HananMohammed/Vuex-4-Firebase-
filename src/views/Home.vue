@@ -19,7 +19,8 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed} from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   name:"HomePage",
@@ -30,19 +31,24 @@ export default {
       { title: 'Mario vs Luigi, Ultimate Showdown', id: 3 },
     ])
 
+    const store = useStore()
+    const points = computed(()=>store.state.points)
+    const updatePoints = (points)=>{
+      store.commit('updatePoints', points)
+    }
     return { 
-      blogs
+      blogs, points, updatePoints
     }
   },
   methods:{
-    updatePoints(points) {
-        this.$store.commit('updatePoints', points)
-    }
+    // updatePoints(points) {
+    //     this.$store.commit('updatePoints', points)
+    // }
   },
   computed:{
-    points(){
-      return this.$store.state.points
-    }
+    // points(){
+    //   return this.$store.state.points
+    // }
   }
 }
 </script>

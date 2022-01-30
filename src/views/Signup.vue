@@ -9,22 +9,32 @@
     <input type="password" name="password" v-model="password" required>
 
     <button>Sign up</button>
+    <div v-if="error">{{ error }}</div>
   </form>
 </template>
 
 <script>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default {
   name:"signup-user",
   setup() {
     const email = ref('')
     const password = ref('')
-    const store = useStore();
+    const error = ref('')
+    const store = useStore()
+    const router = useRouter()
 
-    const handleSubmit = () => {
-      let payload = { email: email.value, password: password.value }
-      store.dispatch('signup', payload)
+    const handleSubmit = async () => {
+      try{
+        let payload = { email: email.value, password: password.value }
+        await store.dispatch('signup', payload)
+        router.push('/')
+      }catch(err){
+        error.value = err.message
+      }
+
     }
 
     return { handleSubmit, email, password }

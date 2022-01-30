@@ -1,4 +1,6 @@
 import { createStore } from 'vuex'
+import { auth } from '../firbase/config'
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const store = createStore({
     state: {
@@ -11,15 +13,12 @@ const store = createStore({
         }
     },
     actions: {
-        signup(context, payload) {
-            console.log('Sigup Action ')
-                // Asyncronus Code Using Actions
-            setTimeout(() => {
-                context.commit('setUser', {
-                    email: payload.email,
-                    password: payload.password
-                })
-            }, 2000);
+        async signup(context, payload) {
+            const res = await createUserWithEmailAndPassword(auth, payload.email, payload.password)
+            if (res)
+                context.commit('setUser', res)
+            else
+                throw new Error('Couldnt Complete Signup')
         }
     }
 })

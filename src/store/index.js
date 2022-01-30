@@ -2,11 +2,24 @@ import { createStore } from 'vuex'
 
 const store = createStore({
     state: {
-        points: 0
+        user: null
     },
     mutations: {
-        updatePoints(state, payload) {
-            state.points = state.points + payload
+        setUser(state, payload) {
+            state.user = payload
+            console.log('user state changed ...', state.user)
+        }
+    },
+    actions: {
+        signup(context, payload) {
+            console.log('Sigup Action ')
+                // Asyncronus Code Using Actions
+            setTimeout(() => {
+                context.commit('setUser', {
+                    email: payload.email,
+                    password: payload.password
+                })
+            }, 2000);
         }
     }
 })
